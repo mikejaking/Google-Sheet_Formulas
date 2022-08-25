@@ -1,0 +1,109 @@
+
+
+/////////// UNPINNED DESCRIPTION ///////////
+// Check if any descriptions are pinned in slots (1 AND 2)
+=IF(AND(desc_one_count>0,desc_two_count>0),
+	
+	// If TRUE, descriptions are pinned in slots (1 AND 2) there are no slots 
+	// available for unpinned descriptions and therefore no possible permutations.
+	// The unpinned descriptions will not show.
+	// return 0
+	0,
+	
+	// If FALSE, descriptions are not pinned in slots (1 AND 2), check if
+	// descriptions are pinned in slots (1 OR 2) as this will impact
+	// the number of objects (k) in the permutation.
+	IF(OR(desc_one_count>0,desc_two_count>0),
+
+		// If TRUE, there are descriptions pinned in slots (1 OR 2).
+		// Check if theres fewer than 2 unpinned descriptions,
+		// If TRUE, there are no permutations.
+		IF(desc_unpin_count<=1,
+
+			// If TRUE, there are fewer than 2 unpinned descriptions and 
+			// therefore there are no permutations.
+			// return the counta of unpinned descriptions.
+			desc_unpin_count,
+
+			// If FALSE there's more than one unpinned description and therefore possible permutations.
+			// Return permutations by number of possible options (1).
+			// There's only one option as the other slot is taken up by description pinned in slots 1 or 2.
+			PERMUT(desc_unpin_count,1)),
+
+		// If FALSE, descriptions are not pinned in slots (1 OR 2).
+		// Check if theres fewer than 2 unpinned descriptions.
+		IF(desc_unpin_count<=1,
+
+			// If TRUE, there are fewer than 2 unpinned descriptions and 
+			// therefore there are no permutations.
+			// return the counta of unpinned descriptions.
+			desc_unpin_count,
+
+			// If FALSE there's more than one unpinned description and therefore possible permutations.
+			// There are 2 possible slots unpinned description can appear beacuse no description are pinned in slots 1 or 2
+			// Return the the permutations by the size of the pool of objects and the number of objects to choose.
+			PERMUT(desc_unpin_count,2))))
+
+
+/////////// UNPINNED HEADLINE///////////
+
+// Check if headlines are pinned in slots (1 AND 2 AND 3)
+=IF(AND(hdline_one_count>0,hdline_two_count>0,hdline_three_count>0),
+
+	// If TRUE, headlines are pinned in slots (1 AND 2 AND 3). There are no slots 
+	// available for unpinned headlines and therefore no possible permutations.
+	// The unpinned headlines will not show.
+	// return 0
+    0,
+
+	// If FALSE, headlines are not pinned in slots (1 AND 2 AND 3), check if
+	// headlines are pinned in slots 2 of the 3 slots as this will impact
+	// the number of objects (k) in the permutation.
+    IF(OR(AND(hdline_one_count>0,hdline_two_count>0),AND(hdline_one_count>0,hdline_three_count>0),AND(hdline_two_count>0,hdline_three_count>0)),
+
+    	// If TRUE 2 of 3 slots have pinned headlines,
+    	// check if there's fewer than 2 unpinned headlines as this will impact
+		// the number of objects (k) in the permutation.
+    	IF(hdline_unpin_count<=1,
+
+				// If TRUE, there are fewer than 2 unpinned headlines and 
+				// therefore there are no permutations.
+				// return the counta of unpinned headlines.
+            	hdline_unpin_count,
+
+            	// If there's more than one unpinned headline 
+            	// and two slots are taken with pins set number of objects to choose (k) to 1 as only one slot availble
+            	PERMUT(hdline_unpin_count,1)),
+
+		// If FALSE check if 1 of the 3 slots has a pinned headline
+		// headlines are pinned in slots (1, 2 OR 3) this will affect
+		// the number of objects (k) in the permutation.
+        IF(OR(hdline_one_count>0,hdline_two_count>0,hdline_three_count>0),
+
+        	// If TRUE 1 of 3 slots has a pinned headline,
+        	// check if there's fewer than 2 unpinned headlines
+            IF(hdline_unpin_count<=1,
+
+				// If TRUE, there are fewer than 2 unpinned headlines and 
+				// therefore there are no permutations.
+				// return the counta of unpinned headlines.
+            	hdline_unpin_count,
+            	
+				// If FALSE there's more than one unpinned headline and therefore possible permutations.
+				// Return permutations by number of possible options (1).
+				// There's only one option as the other slot is taken up by headlines pinned in slots 1, 2 or 3.
+            	PERMUT(hdline_unpin_count,2)),
+
+			// If FALSE, headlines are not pinned in slots (1 OR 2 OR 3).
+			// Check if theres fewer than 2 unpinned headlines.
+            IF(hdline_unpin_count<=1,
+
+				// If TRUE, there are fewer than 2 unpinned headlines and 
+				// therefore there are no permutations.
+				// return the counta of unpinned headlines.
+            	hdline_unpin_count,
+
+				// If FALSE there's more than one unpinned headline and therefore possible permutations.
+				// There are 3 possible slots unpinned headlines can appear beacuse no headlines are pinned in slots 1 or 2
+				// Return the the permutations by the size of the pool of objects and the number of objects to choose.
+            	PERMUT(hdline_unpin_count,3)))))
